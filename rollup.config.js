@@ -8,6 +8,9 @@ var nodeResolve = require('rollup-plugin-node-resolve');
 var pkg = require('./package.json');
 
 let external = Object.keys(pkg.dependencies);
+if (pkg.peerDependencies) {
+  external = external.concat(Object.keys(pkg.peerDependencies));
+}
 var config = {
   entry: 'src/message-view-react-native.js',
   dest: 'build/main/message-view-react-native.js',

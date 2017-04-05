@@ -14,9 +14,6 @@
   "dependencies": {
     "babel-runtime": "^6.23.0",
     "react": "^15.4.2",
-    "react-native": "^0.42.3",
-    "react-native-icon-badge": "^1.1.1",
-    "react-native-vector-icons": "^4.0.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
@@ -39,6 +36,11 @@
     "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-uglify": "^1.0.1"
+  },
+  "peerDependencies": {
+    "react-native": "^0.42.3",
+    "react-native-icon-badge": "^1.1.1",
+    "react-native-vector-icons": "^4.0.0"
   },
   "babel": {
     "presets": [
