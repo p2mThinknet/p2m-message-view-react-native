@@ -38,7 +38,7 @@ export default class MessageBell extends Component {
     if (count > 10) {
       count = "10+";
     }
-    let size = 12;
+    let size = 16;
     if (!count) {
       size = 0;
     }
@@ -50,7 +50,7 @@ export default class MessageBell extends Component {
               </View>
             }
             BadgeElement={
-              <Text style={{color: '#FFFFFF', fontSize: 6}}>{count}</Text>
+              <Text style={{color: '#FFFFFF', fontSize: 8}}>{count}</Text>
             }
             IconBadgeStyle={{width: size, height: size}}
         />
