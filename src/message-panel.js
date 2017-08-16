@@ -30,9 +30,6 @@ const styles = StyleSheet.create({
   },
 });
 
-var resultsCache = {
-  data: []
-};
 
 export default class MessagePanel extends Component {
   constructor(props, context) {
@@ -65,9 +62,6 @@ export default class MessagePanel extends Component {
     this.context.showProgress();
 
     client.messages({filter: this.props.filter}).then(messages => {
-      for (var i in messages.displayMessages) {
-          resultsCache.data.push(messages.displayMessages[i]);
-      }
       this.setState({
         messages: this.state.messages.cloneWithRows(messages.displayMessages),
       });
