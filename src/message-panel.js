@@ -38,7 +38,8 @@ export default class MessagePanel extends Component {
     this.state = {
       isHudVisible: false,
       messages: ds.cloneWithRows([]),
-      page: 0
+      page: 0,
+      cacheData: []
     };
 
     let refresh = _.throttle(this._refresh.bind(this), 100);
@@ -61,9 +62,26 @@ export default class MessagePanel extends Component {
 
     this.context.showProgress();
 
-    client.messages({filter: this.props.filter}).then(messages => {
+    client.messages({filter: this.props.filter, page: 0}).then(messages => {
       this.setState({
         messages: this.state.messages.cloneWithRows(messages.displayMessages),
+        page: 0
+      });
+      this.context.dismissProgress();
+    });
+  }
+
+  _getNextPage() {
+    console.log('[MESSAGE-PANEL] Get Next Page messages.');
+    this._currentFilter = this.props.filter;
+
+    this.context.showProgress();
+
+    client.messages({filter: this.props.filter, page: this.state.page}).then(messages => {
+      let allMessages = [...this.state.cacheData, messages.displayMessages];
+      this.setState({
+        cacheData: allMessages,
+        messages: this.state.messages.cloneWithRows(allMessages),
       });
       this.context.dismissProgress();
     });
@@ -98,7 +116,7 @@ export default class MessagePanel extends Component {
     this.setState({
         page: this.state.page += 1
       });
-    this._refresh();
+    this._getNextPage();
   }
 
   renderSeparator(sectionID, rowID) {
