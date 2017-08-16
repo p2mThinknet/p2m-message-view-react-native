@@ -29,6 +29,8 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
 });
+
+
 export default class MessagePanel extends Component {
   constructor(props, context) {
     super(props, context);
@@ -36,6 +38,7 @@ export default class MessagePanel extends Component {
     this.state = {
       isHudVisible: false,
       messages: ds.cloneWithRows([]),
+      page: 0
     };
 
     let refresh = _.throttle(this._refresh.bind(this), 100);
@@ -91,6 +94,13 @@ export default class MessagePanel extends Component {
     }
   }
 
+  onEndReached() {
+    this.setState({
+        page: this.state.page += 1
+      });
+    this._refresh();
+  }
+
   renderSeparator(sectionID, rowID) {
     let style = styles.rowSeparator;
     return (
@@ -104,7 +114,13 @@ export default class MessagePanel extends Component {
           <ListView style={this.state.content}
                     dataSource={this.state.messages}
                     renderRow={this.renderRow.bind(this)}
-                    renderSeparator={this.renderSeparator.bind(this)}>
+                    renderSeparator={this.renderSeparator.bind(this)}
+                    onEndReached={this.onEndReached.bind(this)}
+                    onEndReachedThreshold={10}
+                    automaticallyAdjustContentInsets={false}
+                    keyboardDismissMode="on-drag"
+                    keyboardShouldPersistTaps="always"
+                    showsVerticalScrollIndicator={false}>
           </ListView>
         </View>
     )
