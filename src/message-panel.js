@@ -67,7 +67,7 @@ export default class MessagePanel extends Component {
       this.setState({
         messages: this.state.messages.cloneWithRows(messages.displayMessages),
         page: 0,
-        cacheData: []
+        cacheData: messages.displayMessages
       });
       this.context.dismissProgress();
     });
