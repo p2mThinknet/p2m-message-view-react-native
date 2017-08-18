@@ -38,7 +38,8 @@ export default class MessagePanel extends Component {
     this.state = {
       isHudVisible: false,
       messages: ds.cloneWithRows([]),
-      page: 0
+      page: 0,
+      cacheData: []
     };
 
     let refresh = _.throttle(this._refresh.bind(this), 100);
@@ -57,13 +58,33 @@ export default class MessagePanel extends Component {
 
   _refresh() {
     console.log('[MESSAGE-PANEL] Refresh message panel.');
+    this.refs._messageListView.scrollTo(0);
     this._currentFilter = this.props.filter;
 
     this.context.showProgress();
 
-    client.messages({filter: this.props.filter}).then(messages => {
+    client.messages({filter: this.props.filter, page: 0}).then(messages => {
       this.setState({
         messages: this.state.messages.cloneWithRows(messages.displayMessages),
+        page: 0,
+        cacheData: messages.displayMessages
+      });
+      this.context.dismissProgress();
+    });
+  }
+
+  _getNextPage() {
+    console.log('[MESSAGE-PANEL] Get Next Page messages.');
+    this._currentFilter = this.props.filter;
+
+    this.context.showProgress();
+
+    client.messages({filter: this.props.filter, page: this.state.page + 1}).then(messages => {
+      let allMessages = [...this.state.cacheData, messages.displayMessages];
+      this.setState({
+        cacheData: allMessages,
+        messages: this.state.messages.cloneWithRows(allMessages),
+        page: this.state.page + 1
       });
       this.context.dismissProgress();
     });
@@ -94,13 +115,6 @@ export default class MessagePanel extends Component {
     }
   }
 
-  onEndReached() {
-    this.setState({
-        page: this.state.page += 1
-      });
-    this._refresh();
-  }
-
   renderSeparator(sectionID, rowID) {
     let style = styles.rowSeparator;
     return (
@@ -112,10 +126,11 @@ export default class MessagePanel extends Component {
     return (
         <View style={styles.container}>
           <ListView style={this.state.content}
+                    ref="_messageListView"
                     dataSource={this.state.messages}
                     renderRow={this.renderRow.bind(this)}
                     renderSeparator={this.renderSeparator.bind(this)}
-                    onEndReached={this.onEndReached.bind(this)}
+                    onEndReached={this._getNextPage.bind(this)}
                     onEndReachedThreshold={10}
                     automaticallyAdjustContentInsets={false}
                     keyboardDismissMode="on-drag"
