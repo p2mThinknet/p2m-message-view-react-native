@@ -80,7 +80,7 @@ export default class MessagePanel extends Component {
     this.context.showProgress();
 
     client.messages({filter: this.props.filter, page: this.state.page + 1}).then(messages => {
-      let allMessages = [...this.state.cacheData, messages.displayMessages];
+      let allMessages = [...this.state.cacheData, ...messages.displayMessages];
       this.setState({
         cacheData: allMessages,
         messages: this.state.messages.cloneWithRows(allMessages),
