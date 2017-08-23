@@ -58,7 +58,12 @@ export default class MessagePanel extends Component {
 
   _refresh() {
     console.log('[MESSAGE-PANEL] Refresh message panel.');
-    this.refs._messageListView.scrollTo(0);
+    try {
+      this.refs._messageListView.scrollTo(0);
+    } catch(err) {
+
+    }
+    
     this._currentFilter = this.props.filter;
 
     this.context.showProgress();
