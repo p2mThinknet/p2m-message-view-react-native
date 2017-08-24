@@ -1791,9 +1791,9 @@ output-file-sync@^1.1.0:
     mkdirp "^0.5.1"
     object-assign "^4.1.0"
 
-p2m-message-client@^1.1.0:
-  version "1.1.0"
-  resolved "http://registry.npm.taobao.org/p2m-message-client/download/p2m-message-client-1.1.0.tgz#f73a1f31af0a3addc7ed717440f8226c7e078a00"
+p2m-message-client@^1.1.1:
+  version "1.1.1"
+  resolved "http://registry.npm.taobao.org/p2m-message-client/download/p2m-message-client-1.1.1.tgz#3afb3a00a255113cabdb4ec463be4051c916e2ec"
   dependencies:
     babel-runtime "^6.23.0"
     whatwg-fetch "^2.0.2"
