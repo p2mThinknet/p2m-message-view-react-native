@@ -42,13 +42,17 @@ export default class MessagePanel extends Component {
       cacheData: []
     };
 
-    let refresh = _.throttle(this._refresh.bind(this), 100);
-    client.on('message', refresh)
-        .on('unreadChange', refresh);
+    this.refresh = _.throttle(this._refresh.bind(this), 100);
   }
 
   componentDidMount() {
     this._refresh();
+    client.on('message', this.refresh)
+          .on('unreadChange', this.refresh);
+  }
+  componentDidUnmount() {
+    client.off('message', this.refresh)
+          .off('unreadChange', this.refresh);
   }
   componentDidUpdate() {
     if (this._currentFilter !== this.props.filter) {
